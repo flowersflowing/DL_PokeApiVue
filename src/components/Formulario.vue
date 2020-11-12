@@ -3,7 +3,7 @@
     <div class="text-center my-5">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" alt="Pokemón">      
     </div>
-    <form @submit.prevent="traerpokemon()">
+    <form @submit.prevent="traerPokemon()">
       <div class="form-group">
         <label for="formGroupExampleInput">Ingresa el nombre de tu pokemón:</label>
         <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Bulbasaur" v-model="nombre_pokemon">
@@ -17,7 +17,7 @@
       <img src="" alt="">
       <h3>Movimientos</h3>
       <ul>
-        <li></li>
+        <li v-for="(objeto, index) in movimientos" :key="index">{{objeto.moves.name}}</li>
       </ul>
       <h3>Habilidades</h3>
       <ul>
@@ -39,8 +39,15 @@ export default {
     }
   },
   methods: {
-    traerpokemon() {
-      // hacer el llamado a la API
+    //Hacer llamado a la API
+    traerPokemon() {
+      fetch(`https://pokeapi.co/api/v2/pokemon/${this.nombre_pokemon}`)
+      .then(resp => resp.json())
+      .then(res => {
+        console.log(res);
+        this.movimientos.push = res;
+      })
+      .catch(error => console.error(error))
     }
   },
   created() {
@@ -53,8 +60,5 @@ export default {
 <style scoped>
   img {
     height: 180px;
-  }
-  li {
-    list-style-type: none;
   }
 </style>
