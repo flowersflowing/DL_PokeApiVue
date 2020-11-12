@@ -14,20 +14,22 @@
     </form>
     <!-- Mostrar nombre, imagen, etc. -->
     <div class="text-center my-5">
-      <img src="" alt="">
+      <img :src="imagen" alt="pokemon">
       <h3>Movimientos</h3>
       <ul>
-        <li v-for="(objeto, index) in movimientos" :key="index">{{objeto.moves.name}}</li>
+        <li v-for="(objeto, index) in movimientos" :key="index">{{objeto.move.name}}</li>
       </ul>
       <h3>Habilidades</h3>
       <ul>
-        <li></li>
+        <li v-for="(objeto, index) in habilidades" :key="index">{{objeto.ability.name}}</li>
       </ul>      
     </div>
   </section>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Formulario',
   data() {
@@ -41,17 +43,20 @@ export default {
   methods: {
     //Hacer llamado a la API
     traerPokemon() {
-      fetch(`https://pokeapi.co/api/v2/pokemon/${this.nombre_pokemon}`)
-      .then(resp => resp.json())
-      .then(res => {
-        console.log(res);
-        this.movimientos.push = res;
+      axios.get(`https://pokeapi.co/api/v2/pokemon/${this.nombre_pokemon}`)
+      .then(result => {
+        console.log(result.data)
+        this.nombre_pokemon = result.data.name;
+        this.imagen = result.data.sprites.front_shiny;
+        this.movimientos = result.data.moves;
+        this.habilidades = result.data.abilities;
       })
-      .catch(error => console.error(error))
+      .catch(error => console.log(error));
     }
   },
   created() {
     //Creo que aquí debería ir el pikachu que es el que debe venir predeterminado
+    this.traerPokemon('pikachu');
   },
 }
 </script>
@@ -60,5 +65,8 @@ export default {
 <style scoped>
   img {
     height: 180px;
+  }
+  li {
+    list-style: none;
   }
 </style>
