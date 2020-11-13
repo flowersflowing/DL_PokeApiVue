@@ -13,15 +13,15 @@
       </div>
     </form>
     <!-- Mostrar nombre, imagen, etc. -->
-    <div class="text-center my-5">
+    <div class="my-5">
       <img :src="imagen" alt="pokemon">
       <h3>Movimientos</h3>
       <ul>
-        <li v-for="(objeto, index) in movimientos" :key="index">{{objeto.move.name}}</li>
+        <li v-for="(objeto, index) in movimientos" :key="index">{{`${objeto.move.name} | `}}</li>
       </ul>
       <h3>Habilidades</h3>
       <ul>
-        <li v-for="(objeto, index) in habilidades" :key="index">{{objeto.ability.name}}</li>
+        <li v-for="(objeto, index) in habilidades" :key="index">{{`${objeto.ability.name} | `}}</li>
       </ul>      
     </div>
   </section>
@@ -54,8 +54,12 @@ export default {
       .catch(error => console.log(error));
     }
   },
+  computed: {
+    //Aquí debería hacer el forEach, devolver un string con las variables, para luego llamarlo desde el DOM.
+  },
   created() {
     //Creo que aquí debería ir el pikachu que es el que debe venir predeterminado
+    this.nombre_pokemon = 'pikachu';
     this.traerPokemon('pikachu');
   },
 }
@@ -68,5 +72,6 @@ export default {
   }
   li {
     list-style: none;
+    display: inline;
   }
 </style>
